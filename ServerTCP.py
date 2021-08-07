@@ -76,7 +76,6 @@ with conn:
         if norm(move_direction) <= 0:
             continue
 
-        print(data)
         if not prog.Busy() and not robot.Busy():
             move_direction = mult3(move_direction, moveSpeed)
 
@@ -100,6 +99,6 @@ with conn:
             new_robot_config = robot.JointsConfig(new_robot_joints)
 
             robot.MoveJ(new_robot_joints)
-            print(robot.Joints())
-            print(joints_2_angles(robot.Joints()[0], robot.type))
+            print(new_robot_joints)
+            # print(joints_2_angles(robot.Joints(), robot.type))
             RDK.Update()
