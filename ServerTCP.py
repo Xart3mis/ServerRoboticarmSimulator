@@ -58,13 +58,30 @@ with conn:
         if len(data) > 2:
             data = data[0:2]
 
-        if not prog.Busy() and not robot.Busy():
+        move_direction = [0, 0, 0]
+        # if data == "Y-":
+        #     move_direction = [0, -1, 0]
+        # elif data == "Y+":
+        #     move_direction = [0, 1, 0]
+        # elif data == "X-":
+        #     move_direction = [-1, 0, 0]
+        # elif data == "X+":
+        #     move_direction = [1, 0, 0]
+        # elif data == "Z+":
+        #     move_direction = [0, 0, 1]
+        # elif data == "Z-":
+        #     move_direction = [0, 0, -1]
+        # elif data == "home":
+        #     Home(robot)
+        counter = moveSpeed
 
-            move_direction = [0, 0, 0]
-            # if data == "Y-":
-            #     move_direction = [0, -1, 0]
-            # elif data == "Y+":
-            #     move_direction = [0, 1, 0]
+        while data != "":
+
+            if data == "Y-":
+                move_direction = [0, -1, 0]
+            elif data == "Y+":
+                move_direction = [0, 1, 0]
+
             # elif data == "X-":
             #     move_direction = [-1, 0, 0]
             # elif data == "X+":
@@ -73,30 +90,15 @@ with conn:
             #     move_direction = [0, 0, 1]
             # elif data == "Z-":
             #     move_direction = [0, 0, -1]
-            # elif data == "home":
-            #     Home(robot)
-            counter = moveSpeed
-            while data != "":
-                if data == "Y-":
-                    move_direction = [0, -1, 0]
-                elif data == "Y+":
-                    move_direction = [0, 1, 0]
-                # elif data == "X-":
-                #     move_direction = [-1, 0, 0]
-                # elif data == "X+":
-                #     move_direction = [1, 0, 0]
-                # elif data == "Z+":
-                #     move_direction = [0, 0, 1]
-                # elif data == "Z-":
-                #     move_direction = [0, 0, -1]
-                elif data == "home":
-                    Home(robot)
 
-                if norm(move_direction) <= 0:
-                    continue
+            elif data == "home":
+                Home(robot)
 
-                print(data)
+            if norm(move_direction) <= 0:
+                continue
 
+            print(data)
+            if not prog.Busy() and not robot.Busy():
                 move_direction = mult3(move_direction, counter)
 
                 print(move_direction)
@@ -121,7 +123,7 @@ with conn:
                 robot.MoveJ(new_robot_joints)
                 print(robot.Joints())
                 RDK.Update()
-                counter += moveSpeed
+            counter += moveSpeed
 
             # if norm(move_direction) <= 0:
             #     continue
