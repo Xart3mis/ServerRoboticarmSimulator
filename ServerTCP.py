@@ -16,6 +16,7 @@ RDK = Robolink(
         "-NOUI",
         "RoboDk/station.rdk",
     ],
+    close_std_out=True,
 )
 
 RDK.Render(False)
@@ -48,7 +49,6 @@ s.listen()
 print("waiting on port: ", port)
 
 conn, addr = s.accept()
-counter = moveSpeed
 with conn:
     print(f"connection from {addr}")
     while True:
@@ -75,19 +75,20 @@ with conn:
             #     move_direction = [0, 0, -1]
             # elif data == "home":
             #     Home(robot)
+            counter = moveSpeed
             while data != "":
                 if data == "Y-":
                     move_direction = [0, -1, 0]
                 elif data == "Y+":
                     move_direction = [0, 1, 0]
-                elif data == "X-":
-                    move_direction = [-1, 0, 0]
-                elif data == "X+":
-                    move_direction = [1, 0, 0]
-                elif data == "Z+":
-                    move_direction = [0, 0, 1]
-                elif data == "Z-":
-                    move_direction = [0, 0, -1]
+                # elif data == "X-":
+                #     move_direction = [-1, 0, 0]
+                # elif data == "X+":
+                #     move_direction = [1, 0, 0]
+                # elif data == "Z+":
+                #     move_direction = [0, 0, 1]
+                # elif data == "Z-":
+                #     move_direction = [0, 0, -1]
                 elif data == "home":
                     Home(robot)
 
@@ -96,9 +97,9 @@ with conn:
 
                 print(data)
 
-                xyz_move = mult3(move_direction, counter)
+                move_direction = mult3(move_direction, counter)
 
-                print(xyz_move)
+                print(move_direction)
 
                 robot_joints = robot.Joints()
 
@@ -106,7 +107,7 @@ with conn:
 
                 robot_config = robot.JointsConfig(robot_joints)
 
-                new_robot_position = transl(xyz_move) * robot_position
+                new_robot_position = transl(move_direction) * robot_position
 
                 new_robot_joints = robot.SolveIK(new_robot_position)
                 if len(new_robot_joints.tolist()) < 6:
