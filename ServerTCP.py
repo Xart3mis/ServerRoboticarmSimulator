@@ -118,7 +118,8 @@ with conn:
                 new_robot_config = robot.JointsConfig(new_robot_joints)
 
                 robot.MoveJ(new_robot_joints)
-                print(robot.Joints()[0])
+                print(robot.Joints())
+                RDK.Update()
                 counter += moveSpeed
 
             # if norm(move_direction) <= 0:
