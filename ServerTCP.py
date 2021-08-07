@@ -1,5 +1,4 @@
 import socket
-from typing import Counter
 
 from robodk import *
 from robolink import *
@@ -16,7 +15,7 @@ RDK = Robolink(
         "-NOUI",
         "RoboDk/station.rdk",
     ],
-    close_std_out=True,
+    close_std_out=False,
 )
 
 RDK.Render(False)
