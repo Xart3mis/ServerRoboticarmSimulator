@@ -101,5 +101,5 @@ with conn:
 
             robot.MoveJ(new_robot_joints)
             print(robot.Joints())
-            print(joints_2_angles(robot.Joints(), robot.type))
+            print(joints_2_angles(robot.Joints()[0], robot.type))
             RDK.Update()
