@@ -59,95 +59,47 @@ with conn:
             data = data[0:2]
 
         move_direction = [0, 0, 0]
-        # if data == "Y-":
-        #     move_direction = [0, -1, 0]
-        # elif data == "Y+":
-        #     move_direction = [0, 1, 0]
-        # elif data == "X-":
-        #     move_direction = [-1, 0, 0]
-        # elif data == "X+":
-        #     move_direction = [1, 0, 0]
-        # elif data == "Z+":
-        #     move_direction = [0, 0, 1]
-        # elif data == "Z-":
-        #     move_direction = [0, 0, -1]
-        # elif data == "home":
-        #     Home(robot)
-        counter = moveSpeed
+        if data == "Y-":
+            move_direction = [0, -1, 0]
+        elif data == "Y+":
+            move_direction = [0, 1, 0]
+        elif data == "X-":
+            move_direction = [-1, 0, 0]
+        elif data == "X+":
+            move_direction = [1, 0, 0]
+        elif data == "Z+":
+            move_direction = [0, 0, 1]
+        elif data == "Z-":
+            move_direction = [0, 0, -1]
+        elif data == "home":
+            Home(robot)
 
-        while data != "":
+        if norm(move_direction) <= 0:
+            continue
 
-            if data == "Y-":
-                move_direction = [0, -1, 0]
-            elif data == "Y+":
-                move_direction = [0, 1, 0]
+        print(data)
+        if not prog.Busy() and not robot.Busy():
+            move_direction = mult3(move_direction, moveSpeed)
 
-            # elif data == "X-":
-            #     move_direction = [-1, 0, 0]
-            # elif data == "X+":
-            #     move_direction = [1, 0, 0]
-            # elif data == "Z+":
-            #     move_direction = [0, 0, 1]
-            # elif data == "Z-":
-            #     move_direction = [0, 0, -1]
+            print(move_direction)
 
-            elif data == "home":
-                Home(robot)
+            robot_joints = robot.Joints()
 
-            if norm(move_direction) <= 0:
+            robot_position = robot.SolveFK(robot_joints)
+
+            robot_config = robot.JointsConfig(robot_joints)
+
+            new_robot_position = transl(move_direction) * robot_position
+
+            new_robot_joints = robot.SolveIK(new_robot_position)
+            if len(new_robot_joints.tolist()) < 6:
+                print(
+                    "No robot solution!! The new position is too far, out of reach or close to a singularity"
+                )
                 continue
 
-            print(data)
-            if not prog.Busy() and not robot.Busy():
-                move_direction = mult3(move_direction, counter)
+            new_robot_config = robot.JointsConfig(new_robot_joints)
 
-                print(move_direction)
-
-                robot_joints = robot.Joints()
-
-                robot_position = robot.SolveFK(robot_joints)
-
-                robot_config = robot.JointsConfig(robot_joints)
-
-                new_robot_position = transl(move_direction) * robot_position
-
-                new_robot_joints = robot.SolveIK(new_robot_position)
-                if len(new_robot_joints.tolist()) < 6:
-                    print(
-                        "No robot solution!! The new position is too far, out of reach or close to a singularity"
-                    )
-                    continue
-
-                new_robot_config = robot.JointsConfig(new_robot_joints)
-
-                robot.MoveJ(new_robot_joints)
-                print(robot.Joints())
-                RDK.Update()
-            counter += moveSpeed
-
-            # if norm(move_direction) <= 0:
-            #     continue
-
-            # print(data)
-            # print(move_direction)
-
-            # xyz_move = mult3(move_direction, moveSpeed)
-
-            # robot_joints = robot.Joints()
-
-            # robot_position = robot.SolveFK(robot_joints)
-
-            # robot_config = robot.JointsConfig(robot_joints)
-
-            # new_robot_position = transl(xyz_move) * robot_position
-
-            # new_robot_joints = robot.SolveIK(new_robot_position)
-            # if len(new_robot_joints.tolist()) < 6:
-            #     print(
-            #         "No robot solution!! The new position is too far, out of reach or close to a singularity"
-            #     )
-            #     continue
-
-            # new_robot_config = robot.JointsConfig(new_robot_joints)
-
-            # robot.MoveJ(new_robot_joints)
+            robot.MoveJ(new_robot_joints)
+            print(robot.Joints())
+            RDK.Update()
