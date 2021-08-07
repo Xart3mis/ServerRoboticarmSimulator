@@ -39,7 +39,7 @@ os.chdir(currentPath)
 
 # Home(robot)
 
-port = 2991
+port = 2992
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 s.bind(("0.0.0.0", port))
@@ -50,7 +50,7 @@ conn, addr = s.accept()
 with conn:
     print(f"connection from {addr}")
     while True:
-        data = str(conn.recv(1024))
+        data = str(conn.recv(1024), "utf-8")
         print(data)
         # if not prog.Busy() and not robot.Busy():
         if True:
