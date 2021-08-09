@@ -36,6 +36,7 @@ robot.setPoseTool(robot.PoseTool())
 moveSpeed = 11
 
 bus = SMBus(1)
+i2cAddr = 8
 
 
 def Home(rbt):
@@ -111,6 +112,8 @@ with conn:
             RDK.Update()
 
             try:
-                bus.write_i2c_block_data(addr, 0, [int(round(i)) for i in jointAngles])
+                bus.write_i2c_block_data(
+                    i2cAddr, 0, [int(round(i)) for i in jointAngles]
+                )
             except OSError:
                 print("could not communicate with i2c bus")
