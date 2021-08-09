@@ -7,16 +7,7 @@ currentPath = os.path.dirname(os.path.realpath(__file__))
 
 os.chdir(currentPath)
 
-RDK = Robolink(
-    args=[
-        "-NOSPLASH",
-        "-TREE_STATE=0",
-        "-EXIT_LAST_COMM",
-        "-NOUI",
-        "RoboDk/station.rdk",
-    ],
-    close_std_out=False,
-)
+RDK = Robolink()
 
 RDK.Render(False)
 RDK.setRunMode(RUNMODE_SIMULATE)
@@ -100,6 +91,5 @@ with conn:
 
             robot.MoveJ(new_robot_joints)
             print(new_robot_joints)
-            print(joints_2_angles(robot.Joints, ITEM_TYPE_ROBOT))
-
+            print(robot.Joints().list()[0])
             RDK.Update()
