@@ -111,6 +111,6 @@ with conn:
             RDK.Update()
 
             try:
-                bus.write_i2c_block_data(addr, 0, [round(i) for i in jointAngles])
+                bus.write_i2c_block_data(addr, 0, [int(round(i)) for i in jointAngles])
             except OSError:
                 print("could not communicate with i2c bus")
