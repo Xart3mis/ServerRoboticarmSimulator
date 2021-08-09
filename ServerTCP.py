@@ -35,7 +35,7 @@ robot.setPoseFrame(robot.PoseFrame())
 robot.setPoseTool(robot.PoseTool())
 moveSpeed = 11
 
-bus = SMBus(0)
+bus = SMBus(1)
 
 
 def Home(rbt):
