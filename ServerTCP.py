@@ -33,7 +33,7 @@ robot = RDK.Item("K1.1 Osiris", ITEM_TYPE_ROBOT)
 
 robot.setPoseFrame(robot.PoseFrame())
 robot.setPoseTool(robot.PoseTool())
-moveSpeed = 11
+moveSpeed = 41
 
 bus = SMBus(1)
 i2cAddr = 8
