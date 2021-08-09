@@ -106,7 +106,7 @@ with conn:
             print(new_robot_joints)
             jointAngles = robot.Joints().list()
 
-            print(jointAngles[0])
+            print(jointAngles)
 
             RDK.Update()
 
