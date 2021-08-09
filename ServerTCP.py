@@ -7,7 +7,16 @@ currentPath = os.path.dirname(os.path.realpath(__file__))
 
 os.chdir(currentPath)
 
-RDK = Robolink()
+RDK = Robolink(
+    args=[
+        "-NOSPLASH",
+        "-TREE_STATE=-1",
+        "-EXIT_LAST_COMM",
+        "-NOUI",
+        "RoboDk/station.rdk",
+    ],
+    close_std_out=True,
+)
 
 RDK.Render(False)
 RDK.setRunMode(RUNMODE_SIMULATE)
