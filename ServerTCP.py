@@ -107,11 +107,12 @@ with conn:
             print(new_robot_joints)
             jointAngles = robot.Joints().list()
 
-            print(jointAngles)
+            print(jointAngles[0])
 
             RDK.Update()
 
             try:
-                bus.write_i2c_block_data(i2cAddr, 0, [round(i) for i in jointAngles])
+                # bus.write_i2c_block_data(i2cAddr, 0, [round(i) for i in jointAngles])
+                bus.write_i2c_block_data(i2cAddr, 0, round(jointAngles[0]))
             except OSError:
                 print("could not communicate with i2c bus")
