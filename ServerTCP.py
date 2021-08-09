@@ -1,5 +1,7 @@
 import socket
 
+from smbus import SMBus
+
 from robodk import *
 from robolink import *
 
@@ -32,6 +34,8 @@ robot = RDK.Item("K1.1 Osiris", ITEM_TYPE_ROBOT)
 robot.setPoseFrame(robot.PoseFrame())
 robot.setPoseTool(robot.PoseTool())
 moveSpeed = 11
+
+bus = SMBus(0)
 
 
 def Home(rbt):
@@ -100,5 +104,13 @@ with conn:
 
             robot.MoveJ(new_robot_joints)
             print(new_robot_joints)
-            print(robot.Joints().list()[0])
+            jointAngles = robot.Joints().list()
+
+            print(jointAngles[0])
+
             RDK.Update()
+
+            try:
+                bus.write_i2c_block_data(addr, 0, [round(i) for i in jointAngles])
+            except OSError:
+                print("could not communicate with i2c bus")
